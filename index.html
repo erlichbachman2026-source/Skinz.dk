@@ -262,6 +262,8 @@
     }
 
     .hero--poster .hero__poster { display: block; }
+    .hero--poster .hero__glitch,
+    .hero--poster .hero__scanlines { display: none; }
 
     .hero--poster .hero__poster img {
       width: 100%;
@@ -317,17 +319,38 @@
       .hero--poster .hero__poster::before {
         content: '';
         position: absolute;
-        inset: -40px;
+        inset: -60px;
         z-index: -1;
-        background: url('img/hero-mo-portrait.jpg') center / cover no-repeat;
-        filter: blur(40px) brightness(0.3);
+        background: url('img/hero-mo-portrait.jpg') center 40% / cover no-repeat;
+        filter: blur(22px) brightness(0.7) contrast(1.05);
+        animation: imgGlitch 3.5s infinite;
       }
-      .hero--poster .hero__poster img {
-        width: auto;
+      .hero--poster .hero__frame {
+        position: relative;
         height: 100%;
+        aspect-ratio: 1600 / 2126;
         max-width: 100%;
-        object-fit: contain;
+        overflow: hidden;
+        box-shadow: 0 0 80px rgba(0,0,0,0.6);
       }
+      .hero--poster .hero__frame picture { display: block; height: 100%; }
+      .hero--poster .hero__poster img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        animation: heroReveal 1s ease 0.1s forwards, posterGlitch 3.5s infinite 1.2s;
+      }
+      .hero--poster .hero__glitch { display: block; }
+      .hero--poster .hero__scanlines { display: block; }
+      .hero--poster .hero__glitch::before,
+      .hero--poster .hero__glitch::after {
+        background-image: url('img/hero-mo-portrait.jpg');
+        background-size: 100% 100%;
+        background-position: center;
+        filter: none;
+      }
+      .hero--poster .hero__glitch::before { animation: posterGlitchR 3s infinite; }
+      .hero--poster .hero__glitch::after { animation: posterGlitchB 3s infinite 0.15s; }
       .hero--poster .hero__content {
         flex-direction: row;
         align-items: center;
@@ -339,6 +362,45 @@
       }
       .hero__tagline { font-size: clamp(1.8rem, 3vw, 3rem); }
       .hero--poster .hero__cta { margin-top: 0; }
+      /* Desktop: no "Billetter" heading above the date row */
+      .tour__heading { display: none; }
+    }
+
+    @keyframes posterGlitch {
+      0%, 65% { clip-path: none; }
+      66% { clip-path: inset(8% 0 80% 0); }
+      67% { clip-path: none; }
+      68% { clip-path: inset(52% 0 35% 0); }
+      69%, 82% { clip-path: none; }
+      83% { clip-path: inset(30% 0 55% 0); }
+      84% { clip-path: none; }
+      90% { clip-path: inset(60% 0 22% 0); }
+      91%, 100% { clip-path: none; }
+    }
+
+    @keyframes posterGlitchR {
+      0%, 68% { opacity: 0; transform: none; clip-path: inset(0); }
+      69% { opacity: 0.85; transform: translate(4px, -1px); clip-path: inset(12% 0 70% 0); filter: hue-rotate(-50deg) saturate(4) brightness(1.1); }
+      70% { opacity: 0; transform: none; clip-path: inset(0); }
+      71% { opacity: 0.7; transform: translate(-5px, 1px); clip-path: inset(48% 0 30% 0); filter: hue-rotate(-50deg) saturate(4) brightness(1.1); }
+      72% { opacity: 0; transform: none; clip-path: inset(0); }
+      84% { opacity: 0; transform: none; clip-path: inset(0); }
+      85% { opacity: 0.8; transform: translate(3px, 0); clip-path: inset(30% 0 50% 0); filter: hue-rotate(-50deg) saturate(3) brightness(1.1); }
+      86% { opacity: 0.6; transform: translate(-4px, 0); clip-path: inset(65% 0 15% 0); filter: hue-rotate(-50deg) saturate(3) brightness(1.1); }
+      87%, 100% { opacity: 0; transform: none; clip-path: inset(0); }
+    }
+
+    @keyframes posterGlitchB {
+      0%, 64% { opacity: 0; transform: none; clip-path: inset(0); }
+      65% { opacity: 0.8; transform: translate(-4px, 1px); clip-path: inset(38% 0 40% 0); filter: hue-rotate(210deg) saturate(4) brightness(1.1); }
+      66% { opacity: 0.6; transform: translate(5px, -1px); clip-path: inset(5% 0 78% 0); filter: hue-rotate(210deg) saturate(4) brightness(1.1); }
+      67% { opacity: 0; transform: none; clip-path: inset(0); }
+      78% { opacity: 0; transform: none; clip-path: inset(0); }
+      79% { opacity: 0.7; transform: translate(-3px, 0); clip-path: inset(55% 0 25% 0); filter: hue-rotate(210deg) saturate(3) brightness(1.1); }
+      80% { opacity: 0; transform: none; clip-path: inset(0); }
+      92% { opacity: 0; transform: none; clip-path: inset(0); }
+      93% { opacity: 0.65; transform: translate(4px, 1px); clip-path: inset(20% 0 60% 0); filter: hue-rotate(210deg) saturate(3) brightness(1.1); }
+      94%, 100% { opacity: 0; transform: none; clip-path: inset(0); }
     }
 
     /* ─── TOUR SECTION ─── */
@@ -643,10 +705,16 @@
 
   <!-- HERO -->
   <section class="hero hero--poster">
-    <picture class="hero__poster">
-      <source media="(max-width: 700px)" srcset="img/hero-mo-story.jpg">
-      <img src="img/hero-mo-portrait.jpg" srcset="img/hero-mo-portrait.jpg 1600w, img/hero-mo-portrait-2x.jpg 2267w" sizes="100vw" alt="SKINZ — MO. Poolen, 02/10/2027" loading="eager" fetchpriority="high" width="1600" height="2126">
-    </picture>
+    <div class="hero__poster">
+      <div class="hero__frame">
+        <picture>
+          <source media="(max-width: 700px)" srcset="img/hero-mo-story.jpg">
+          <img src="img/hero-mo-portrait.jpg" srcset="img/hero-mo-portrait.jpg 1600w, img/hero-mo-portrait-2x.jpg 2267w" sizes="(min-width: 701px) 75vh, 100vw" alt="SKINZ — MO. Poolen, 02/10/2027" loading="eager" fetchpriority="high" width="1600" height="2126">
+        </picture>
+        <div class="hero__glitch" aria-hidden="true"></div>
+        <div class="hero__scanlines" aria-hidden="true"></div>
+      </div>
+    </div>
     <div class="hero__content">
       <h1 class="sr-only">SKINZ — MO — Poolen 02/10/2027</h1>
       <p class="hero__tagline">Mit st&oslash;rste show.<br>Mit eneste show i 2027</p>
@@ -747,6 +815,21 @@
         heroContent.style.opacity = 1 - progress * 1.3;
       }
     }, { passive: true });
+
+    // Glitch jitter (desktop only; mobile untouched)
+    const heroImgEl = document.querySelector('.hero__poster img');
+    function triggerGlitchJitter() {
+      if (desktop.matches && heroImgEl) {
+        const offset = (Math.random() - 0.5) * 6;
+        heroImgEl.style.translate = `${offset}px 0`;
+        setTimeout(() => {
+          heroImgEl.style.translate = `${-offset * 0.4}px 0`;
+          setTimeout(() => { heroImgEl.style.translate = 'none'; }, 35);
+        }, 40);
+      }
+      setTimeout(triggerGlitchJitter, 1500 + Math.random() * 2500);
+    }
+    setTimeout(triggerGlitchJitter, 1200);
   </script>
 
 </body>
