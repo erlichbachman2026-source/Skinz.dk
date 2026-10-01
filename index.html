@@ -304,12 +304,38 @@
     }
 
     @media (min-width: 701px) {
+      /* Desktop: whole poster fitted to the screen height, centred; dark blurred fill at the sides */
+      .hero--poster .hero__poster {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .hero--poster .hero__poster::before {
+        content: '';
+        position: absolute;
+        inset: -40px;
+        z-index: -1;
+        background: url('img/hero-mo-portrait.jpg') center / cover no-repeat;
+        filter: blur(40px) brightness(0.3);
+      }
+      .hero--poster .hero__poster img {
+        width: auto;
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+      }
       .hero--poster .hero__content {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         gap: 2rem;
         padding: clamp(2rem, 4vh, 3rem) clamp(1.5rem, 5vw, 4rem);
+        opacity: 1 !important;
+        transform: none !important;
       }
       .hero__tagline { font-size: clamp(1.8rem, 3vw, 3rem); }
       .hero--poster .hero__cta { margin-top: 0; }
@@ -709,7 +735,9 @@
     const heroContent = document.querySelector('.hero__content');
     const hero = document.querySelector('.hero');
 
+    const desktop = window.matchMedia('(min-width: 701px)');
     window.addEventListener('scroll', () => {
+      if (desktop.matches) return; // desktop: poster and text stay in place
       const scrollY = window.scrollY;
       const heroH = hero.offsetHeight;
       if (scrollY < heroH) {
