@@ -815,10 +815,10 @@
       const heroH = hero.offsetHeight;
       if (scrollY < heroH) {
         const progress = scrollY / heroH;
-        heroBg.style.transform = `translateY(${scrollY * 0.15}px)`;
-        heroContent.style.transform = `translateY(${scrollY * -0.25}px)`;
-        // Fade out fully after 40px of upward travel, before reaching the poster's date line
-        heroContent.style.opacity = Math.max(0, 1 - (scrollY * 0.25) / 40);
+        heroBg.style.transform = `translateY(${scrollY * 0.08}px)`;
+        heroContent.style.transform = `translateY(${scrollY * -0.14}px)`;
+        // Eased fade: fully out at 240px of scroll, just before the text would reach the poster's date line
+        heroContent.style.opacity = Math.max(0, 1 - Math.pow(scrollY / 240, 1.6));
       }
     }, { passive: true });
 
