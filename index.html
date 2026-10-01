@@ -22,10 +22,11 @@
 
     :root {
       --bg: #0a0a0a;
-      --text: #f0f0f0;
-      --text-secondary: rgba(240, 240, 240, 0.5);
-      --text-muted: rgba(240, 240, 240, 0.2);
-      --border: rgba(240, 240, 240, 0.08);
+      --pink: #e4b0d8;
+      --text: #e4b0d8;
+      --text-secondary: rgba(228, 176, 216, 0.55);
+      --text-muted: rgba(228, 176, 216, 0.25);
+      --border: rgba(228, 176, 216, 0.14);
       --display: 'Bebas Neue', 'Arial Narrow', sans-serif;
       --body: 'Inter', -apple-system, sans-serif;
     }
@@ -40,7 +41,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    ::selection { background: rgba(255,255,255,0.15); }
+    ::selection { background: rgba(228,176,216,0.3); }
 
     /* ─── HERO: FULL BLEED IMAGE ─── */
     .hero {
@@ -233,8 +234,8 @@
       text-transform: uppercase;
       text-decoration: none;
       color: var(--bg);
-      background: #ffffff;
-      border: 2px solid #ffffff;
+      background: var(--pink);
+      border: 2px solid var(--pink);
       border-radius: 0;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       opacity: 0;
@@ -244,7 +245,7 @@
 
     .hero__cta:hover {
       background: transparent;
-      color: #ffffff;
+      color: var(--pink);
       letter-spacing: 0.25em;
       padding-left: clamp(3rem, 6vw, 5rem);
       padding-right: clamp(3rem, 6vw, 5rem);
@@ -256,6 +257,7 @@
 
     /* ─── HERO: POSTER ─── */
     .hero--poster .hero__fill {
+      display: none;
       position: absolute;
       inset: 0;
       z-index: 0;
@@ -274,27 +276,57 @@
     }
 
     .hero--poster .hero__poster img {
+      width: 100%;
       height: 100%;
-      width: auto;
-      max-width: 100%;
-      object-fit: contain;
+      object-fit: cover;
+      object-position: center bottom;
       display: block;
       opacity: 0;
       animation: heroReveal 1s ease 0.1s forwards;
     }
 
     .hero--poster .hero__gradient {
-      height: 18%;
+      height: 5%;
       z-index: 2;
-      background: linear-gradient(to top, var(--bg) 0%, rgba(10,10,10,0.35) 45%, transparent 100%);
+      background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+    }
+
+    .hero--poster .hero__shade {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 45%;
+      z-index: 2;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.35) 50%, transparent 100%);
+      pointer-events: none;
     }
 
     .hero--poster .hero__content {
-      align-items: flex-end;
+      top: 0;
+      bottom: auto;
+      padding-top: clamp(2rem, 5vh, 3.5rem);
+      padding-bottom: 0;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
       z-index: 3;
     }
 
-    .hero--poster .hero__cta { margin-top: 0; }
+    .hero__tagline {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(1.6rem, 2.3vw, 2.6rem);
+      line-height: 1.05;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--pink);
+      max-width: 22ch;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: heroReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    }
+
+    .hero--poster .hero__cta { margin-top: 0; flex-shrink: 0; }
 
     .sr-only {
       position: absolute;
@@ -314,8 +346,11 @@
         object-fit: contain;
         object-position: center top;
       }
+      .hero--poster .hero__shade { display: none; }
       .hero--poster .hero__gradient { height: 26%; }
-      .hero--poster .hero__content { align-items: stretch; padding-bottom: 1.5rem; }
+      .hero--poster .hero__content { top: auto; bottom: 0; flex-direction: column; align-items: stretch; gap: 0; padding-top: 0; padding-bottom: 1.5rem; }
+      .hero__tagline { font-size: clamp(1.5rem, 6.5vw, 2rem); max-width: none; }
+      .hero--poster .hero__cta { margin-top: 1rem; }
     }
 
     /* ─── TOUR SECTION ─── */
@@ -439,11 +474,11 @@
       border: 1px solid var(--border);
       overflow: hidden;
       transition: border-color 0.3s ease;
-      background: rgba(255,255,255,0.03);
+      background: rgba(228,176,216,0.04);
     }
 
     .newsletter__form:focus-within {
-      border-color: rgba(255,255,255,0.2);
+      border-color: rgba(228,176,216,0.4);
     }
 
     .newsletter__input {
@@ -625,79 +660,25 @@
       <source media="(max-width: 700px)" srcset="img/hero-mo-story.jpg">
       <img src="img/hero-mo-portrait.jpg" alt="SKINZ — MO. Poolen, 02/10/2027" loading="eager" fetchpriority="high" width="1600" height="2126">
     </picture>
+    <div class="hero__shade" aria-hidden="true"></div>
     <div class="hero__gradient"></div>
     <div class="hero__content">
       <h1 class="sr-only">SKINZ — MO — Poolen 02/10/2027</h1>
-      <a href="https://tix.to/skinz" target="_blank" rel="noopener" class="hero__cta">K&oslash;b Billetter</a>
+      <p class="hero__tagline">Mit st&oslash;rste show.<br>Mit eneste show i 2027</p>
+      <a href="https://tickets.poolen.dk/en/uzt2lnxgt7mxmmk/eventsaleclosed" target="_blank" rel="noopener" class="hero__cta">K&oslash;b Billetter</a>
     </div>
   </section>
 
   <!-- TOUR -->
   <section class="tour">
     <div class="fade-element">
-      <h2 class="tour__heading">Se Alle<br>Datoer</h2>
+      <h2 class="tour__heading">Billetter</h2>
       <ul class="tour__dates">
         <li class="tour__date-row">
-          <a href="https://tobakken.dk/program/skinz/" target="_blank" rel="noopener">
-            <span class="tour__date-day">26. Feb</span>
-            <span class="tour__date-venue">Tobakken</span>
-            <span class="tour__date-city">Esbjerg</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://www.vejlemusikteater.dk/program/skinz/" target="_blank" rel="noopener">
-            <span class="tour__date-day">27. Feb</span>
-            <span class="tour__date-venue">Vejle Musikteater</span>
-            <span class="tour__date-city">Vejle</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://www.billetlugen.dk/event/20041796/?affiliate=DKA" target="_blank" rel="noopener">
-            <span class="tour__date-day">28. Feb</span>
-            <span class="tour__date-venue">Skr&aring;en</span>
-            <span class="tour__date-city">Aalborg</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://ringstedkongrescenter.dk/events/skinz/" target="_blank" rel="noopener">
-            <span class="tour__date-day">06. Mar</span>
-            <span class="tour__date-venue">Ringsted Kongrescenter</span>
-            <span class="tour__date-city">Ringsted</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://www.ticketmaster.dk/event/177104260?language=da-dk&camefrom=train&brand=dk_train" target="_blank" rel="noopener">
-            <span class="tour__date-day">07. Mar</span>
-            <span class="tour__date-venue">TRAIN</span>
-            <span class="tour__date-city">Aarhus</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://kuto.dk/arrangementer/skinz" target="_blank" rel="noopener">
-            <span class="tour__date-day">13. Mar</span>
-            <span class="tour__date-venue">Toldkammeret</span>
-            <span class="tour__date-city">Helsing&oslash;r</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://www.billetlugen.dk/event/20036852/?affiliate=VGA" target="_blank" rel="noopener">
-            <span class="tour__date-day">14. Mar</span>
-            <span class="tour__date-venue">VEGA</span>
+          <a href="https://tickets.poolen.dk/en/uzt2lnxgt7mxmmk/eventsaleclosed" target="_blank" rel="noopener">
+            <span class="tour__date-day">02. Okt 2027</span>
+            <span class="tour__date-venue">Poolen</span>
             <span class="tour__date-city">K&oslash;benhavn</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://postenlive.dk/event/skinz/" target="_blank" rel="noopener">
-            <span class="tour__date-day">20. Mar</span>
-            <span class="tour__date-venue">Posten</span>
-            <span class="tour__date-city">Odense</span>
             <span class="tour__date-arrow">&rarr;</span>
           </a>
         </li>
