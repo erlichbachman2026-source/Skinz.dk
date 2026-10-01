@@ -3,689 +3,747 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SKINZ</title>
+  <title>SKINZ — Live Tour</title>
+  <meta name="description" content="SKINZ på tour i Danmark. Se alle datoer og køb billetter.">
+  <meta property="og:title" content="SKINZ — Live Tour">
+  <meta property="og:description" content="SKINZ på tour i Danmark. Se alle datoer og køb billetter.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="img/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#f3efe6">
   <link rel="icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="img/skinz-hero.jpg" imagesrcset="img/skinz-hero-900.jpg 900w, img/skinz-hero.jpg 1800w" imagesizes="(max-width: 800px) 100vw, 50vw">
   <style>
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #0a0a0a;
-      --text: #f0f0f0;
-      --text-secondary: rgba(240, 240, 240, 0.5);
-      --text-muted: rgba(240, 240, 240, 0.2);
-      --border: rgba(240, 240, 240, 0.08);
-      --display: 'Bebas Neue', 'Arial Narrow', sans-serif;
-      --body: 'Inter', -apple-system, sans-serif;
+      --paper: #f3efe6;
+      --paper-deep: #e9e2d3;
+      --ink: #111111;
+      --ink-soft: rgba(17, 17, 17, 0.55);
+      --ink-faint: rgba(17, 17, 17, 0.28);
+      --rule: rgba(17, 17, 17, 0.16);
+      --accent: #b5622a;
+      --accent-ink: #f3efe6;
+      --display: 'Archivo Black', 'Arial Black', 'Helvetica Neue', sans-serif;
+      --mono: 'Space Mono', 'SFMono-Regular', Menlo, monospace;
+      --body: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
+      --gutter: clamp(1.25rem, 4vw, 3.5rem);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
-      color: var(--text);
+      background: var(--paper);
+      color: var(--ink);
       font-family: var(--body);
+      font-weight: 400;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    ::selection { background: rgba(255,255,255,0.15); }
+    ::selection { background: var(--ink); color: var(--paper); }
 
-    /* ─── HERO: FULL BLEED IMAGE ─── */
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .mono {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    /* ─── TOP BAR ─── */
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem var(--gutter);
+      background: color-mix(in srgb, var(--paper) 88%, transparent);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .top__brand {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+
+    .top__meta { color: var(--ink-soft); text-align: center; }
+
+    .top__cta {
+      justify-self: end;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.65rem 1.1rem;
+      border: 1.5px solid var(--ink);
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .top__cta:hover { background: var(--ink); color: var(--paper); }
+
+    /* ─── HERO ─── */
     .hero {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;
-      min-height: 700px;
-      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      min-height: calc(100vh - 58px);
+      min-height: calc(100dvh - 58px);
+      border-bottom: 1px solid var(--rule);
     }
 
-    .hero__bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-
-    .hero__bg img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 20%;
-      filter: brightness(0.45) contrast(1.15) grayscale(1);
-      min-height: 100%;
-      min-width: 100%;
-      transform: scale(1.05);
-      animation: imgGlitch 3.5s infinite;
-    }
-
-    /* ─── GLITCH ─── */
-    .hero__glitch {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .hero__glitch::before,
-    .hero__glitch::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url('IMG_2212.jpg');
-      background-size: cover;
-      background-position: center 20%;
-      filter: brightness(0.45) contrast(1.15) grayscale(1);
-      opacity: 0;
-    }
-
-    .hero__glitch::before {
-      animation: glitchR 3s infinite;
-      mix-blend-mode: screen;
-    }
-
-    .hero__glitch::after {
-      animation: glitchB 3s infinite 0.15s;
-      mix-blend-mode: screen;
-    }
-
-    @keyframes glitchR {
-      0%, 68% { opacity: 0; transform: none; clip-path: inset(0); }
-      69% { opacity: 0.85; transform: translate(3px, -1px); clip-path: inset(12% 0 70% 0); filter: brightness(0.7) contrast(1.1) hue-rotate(-50deg) saturate(4); }
-      70% { opacity: 0; transform: none; clip-path: inset(0); }
-      71% { opacity: 0.7; transform: translate(-4px, 1px); clip-path: inset(48% 0 30% 0); filter: brightness(0.7) contrast(1.1) hue-rotate(-50deg) saturate(4); }
-      72% { opacity: 0; transform: none; clip-path: inset(0); }
-      84% { opacity: 0; transform: none; clip-path: inset(0); }
-      85% { opacity: 0.8; transform: translate(2px, 0); clip-path: inset(30% 0 50% 0); filter: brightness(0.7) contrast(1.1) hue-rotate(-50deg) saturate(3); }
-      86% { opacity: 0.6; transform: translate(-3px, 0); clip-path: inset(65% 0 15% 0); filter: brightness(0.7) contrast(1.1) hue-rotate(-50deg) saturate(3); }
-      87%, 100% { opacity: 0; transform: none; clip-path: inset(0); }
-    }
-
-    @keyframes glitchB {
-      0%, 64% { opacity: 0; transform: none; clip-path: inset(0); }
-      65% { opacity: 0.8; transform: translate(-3px, 1px); clip-path: inset(38% 0 40% 0); filter: brightness(0.7) contrast(1.1) hue-rotate(210deg) saturate(4); }
-      66% { opacity: 0.6; transform: translate(4px, -1px); clip-path: inset(5% 0 78% 0); filter: brightness(0.7) contrast(1.1) hue-rotate(210deg) saturate(4); }
-      67% { opacity: 0; transform: none; clip-path: inset(0); }
-      78% { opacity: 0; transform: none; clip-path: inset(0); }
-      79% { opacity: 0.7; transform: translate(-2px, 0); clip-path: inset(55% 0 25% 0); filter: brightness(0.7) contrast(1.1) hue-rotate(210deg) saturate(3); }
-      80% { opacity: 0; transform: none; clip-path: inset(0); }
-      92% { opacity: 0; transform: none; clip-path: inset(0); }
-      93% { opacity: 0.65; transform: translate(3px, 1px); clip-path: inset(20% 0 60% 0); filter: brightness(0.7) contrast(1.1) hue-rotate(210deg) saturate(3); }
-      94%, 100% { opacity: 0; transform: none; clip-path: inset(0); }
-    }
-
-    .hero__scanlines {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px);
-      pointer-events: none;
-      animation: scanFlicker 3s infinite;
-    }
-
-    @keyframes scanFlicker {
-      0%, 92% { opacity: 1; }
-      93% { opacity: 0.4; }
-      94% { opacity: 1; }
-      96% { opacity: 0.6; }
-      97%, 100% { opacity: 1; }
-    }
-
-    @keyframes imgGlitch {
-      0%, 65% { clip-path: none; filter: brightness(0.45) contrast(1.15) grayscale(1); }
-      66% { clip-path: inset(8% 0 80% 0); filter: brightness(0.55) contrast(1.2) grayscale(1); }
-      67% { clip-path: none; filter: brightness(0.45) contrast(1.15) grayscale(1); }
-      68% { clip-path: inset(52% 0 35% 0); filter: brightness(0.35) contrast(1.2) grayscale(1); }
-      69%, 82% { clip-path: none; filter: brightness(0.45) contrast(1.15) grayscale(1); }
-      83% { clip-path: inset(30% 0 55% 0); filter: brightness(0.5) contrast(1.18) grayscale(1); }
-      84% { clip-path: none; filter: brightness(0.45) contrast(1.15) grayscale(1); }
-      90% { clip-path: inset(60% 0 22% 0); filter: brightness(0.4) contrast(1.2) grayscale(1); }
-      91%, 100% { clip-path: none; filter: brightness(0.45) contrast(1.15) grayscale(1); }
-    }
-
-    .hero__gradient {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60%;
-      background: linear-gradient(to top, var(--bg) 0%, rgba(10,10,10,0.8) 30%, rgba(10,10,10,0.3) 60%, transparent 100%);
-      z-index: 1;
-    }
-
-    /* ─── HERO CONTENT: BIG, BOLD, IN YOUR FACE ─── */
-    .hero__content {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 2;
-      padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vh, 5rem);
+    .hero__text {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      justify-content: space-between;
+      padding: clamp(2rem, 5vh, 4rem) var(--gutter) clamp(2rem, 5vh, 3.5rem);
+      border-right: 1px solid var(--rule);
+      position: relative;
     }
 
-    /* Giant artist name */
+    .hero__kicker {
+      display: flex;
+      gap: 1.5rem;
+      color: var(--ink-soft);
+    }
+
+    .hero__title-wrap { margin-top: auto; }
+
     .hero__title {
       font-family: var(--display);
       font-weight: 400;
-      font-size: clamp(5rem, 18vw, 16rem);
-      line-height: 0.85;
+      font-size: clamp(5.5rem, 15.5vw, 17rem);
+      line-height: 0.82;
+      letter-spacing: -0.045em;
+      text-transform: uppercase;
+      margin-left: -0.04em;
+      opacity: 0;
+      transform: translateY(0.25em);
+      animation: rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    }
+
+    .hero__sub {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.4rem 1.2rem;
+      margin-top: clamp(1rem, 2.5vh, 1.75rem);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+    }
+
+    .hero__sub-big {
+      font-family: var(--display);
+      font-size: clamp(1.4rem, 3vw, 2.6rem);
       letter-spacing: -0.02em;
       text-transform: uppercase;
-      color: #ffffff;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: heroReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
-    }
-
-    /* Tour info line */
-    .hero__info {
-      display: flex;
-      align-items: center;
-      gap: clamp(1rem, 3vw, 2.5rem);
-      margin-top: clamp(0.8rem, 2vh, 1.5rem);
-      opacity: 0;
-      transform: translateY(30px);
-      animation: heroReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
-    }
-
-    .hero__date,
-    .hero__venue {
-      font-family: var(--display);
-      font-weight: 400;
-      font-size: clamp(1.8rem, 4.5vw, 3.5rem);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.85);
       line-height: 1;
     }
 
-    .hero__info-divider {
-      width: 2px;
-      height: clamp(1.5rem, 3vw, 2.5rem);
-      background: rgba(255, 255, 255, 0.25);
-      flex-shrink: 0;
-    }
+    .hero__sub-small { color: var(--ink-soft); }
 
-    /* CTA Button — big and bold */
-    .hero__cta {
-      display: inline-block;
-      margin-top: clamp(1.5rem, 3vh, 2.5rem);
-      padding: clamp(1rem, 2vh, 1.4rem) clamp(2.5rem, 5vw, 4rem) clamp(0.85rem, 1.8vh, 1.2rem);
-      font-family: var(--display);
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--bg);
-      background: #ffffff;
-      border: 2px solid #ffffff;
-      border-radius: 0;
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: clamp(1.5rem, 4vh, 2.5rem);
       opacity: 0;
-      transform: translateY(30px);
-      animation: heroReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+      transform: translateY(20px);
+      animation: rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
     }
 
-    .hero__cta:hover {
-      background: transparent;
-      color: #ffffff;
-      letter-spacing: 0.25em;
-      padding-left: clamp(3rem, 6vw, 5rem);
-      padding-right: clamp(3rem, 6vw, 5rem);
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1.05rem 1.6rem;
+      border: 1.5px solid var(--ink);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     }
 
-    @keyframes heroReveal {
-      to { opacity: 1; transform: translateY(0); }
+    .btn--primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+    .btn--primary:hover { background: var(--ink); border-color: var(--ink); transform: translateY(-2px); }
+    .btn--ghost:hover { background: var(--ink); color: var(--paper); transform: translateY(-2px); }
+    .btn__arrow { transition: transform 0.25s ease; }
+    .btn:hover .btn__arrow { transform: translateX(4px); }
+
+    .hero__photo {
+      position: relative;
+      overflow: hidden;
+      background: var(--paper-deep);
     }
 
-    /* ─── TOUR SECTION ─── */
-    .tour {
-      padding: clamp(5rem, 10vh, 8rem) clamp(1.5rem, 5vw, 4rem);
+    .hero__photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 18%;
+      filter: contrast(1.04) saturate(1.05);
+      transform: scale(1.02);
+      opacity: 0;
+      animation: photoIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
     }
 
-    .tour__heading {
+    .hero__tag {
+      position: absolute;
+      left: 1.25rem;
+      bottom: 1.25rem;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 0.55rem 0.8rem;
+      box-shadow: 0 1px 0 var(--rule);
+    }
+
+    .hero__num {
+      position: absolute;
+      right: 1rem;
+      top: 0.4rem;
+      font-family: var(--display);
+      font-size: clamp(4rem, 9vw, 9rem);
+      line-height: 1;
+      color: var(--paper);
+      opacity: 0.92;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.25);
+      letter-spacing: -0.05em;
+      pointer-events: none;
+    }
+
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+    @keyframes photoIn { to { opacity: 1; transform: scale(1); } }
+
+    /* ─── MARQUEE ─── */
+    .marquee {
+      overflow: hidden;
+      border-bottom: 1px solid var(--rule);
+      background: var(--ink);
+      color: var(--paper);
+      padding: 0.75rem 0;
+      white-space: nowrap;
+    }
+
+    .marquee__track {
+      display: inline-flex;
+      gap: 3rem;
+      animation: marquee 28s linear infinite;
+      will-change: transform;
+    }
+
+    .marquee__item {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      display: inline-flex;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .marquee__item::after { content: '●'; font-size: 0.45rem; opacity: 0.5; }
+
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* ─── SECTION HEADER ─── */
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: clamp(3rem, 7vh, 5rem) var(--gutter) clamp(1.5rem, 3vh, 2rem);
+    }
+
+    .section-head h2 {
       font-family: var(--display);
       font-weight: 400;
-      font-size: clamp(3rem, 10vw, 8rem);
-      letter-spacing: -0.01em;
-      line-height: 0.9;
+      font-size: clamp(2.8rem, 8vw, 7rem);
+      line-height: 0.88;
+      letter-spacing: -0.04em;
       text-transform: uppercase;
-      margin-bottom: clamp(2rem, 4vh, 3rem);
     }
 
-    .tour__dates {
-      list-style: none;
-      width: 100%;
-      max-width: 800px;
-    }
+    .section-head .mono { color: var(--ink-soft); padding-bottom: 0.4rem; }
 
-    .tour__date-row {
-      border-top: 1px solid var(--border);
-    }
+    /* ─── DATES ─── */
+    .dates { list-style: none; border-top: 1px solid var(--ink); }
 
-    .tour__date-row:last-child {
-      border-bottom: 1px solid var(--border);
-    }
+    .dates__row { border-bottom: 1px solid var(--rule); }
+    .dates__row:last-child { border-bottom: 1px solid var(--ink); }
 
-    .tour__date-row a {
+    .dates__row a {
       display: grid;
-      grid-template-columns: clamp(5rem, 10vw, 8rem) 1fr auto auto;
+      grid-template-columns: 3rem clamp(5rem, 9vw, 8rem) 1fr auto;
       align-items: center;
-      gap: clamp(1rem, 2vw, 2rem);
-      padding: clamp(1rem, 2vh, 1.5rem) 0;
+      gap: clamp(0.8rem, 2vw, 2rem);
+      padding: clamp(1.1rem, 2.4vh, 1.6rem) var(--gutter);
       text-decoration: none;
-      color: var(--text);
-      transition: opacity 0.3s ease, padding-left 0.3s ease;
+      position: relative;
+      transition: color 0.3s ease;
     }
 
-    .tour__date-row a:hover {
-      opacity: 0.7;
-      padding-left: 0.5rem;
+    .dates__row a::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--ink);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 0;
     }
 
-    .tour__date-day {
+    .dates__row a > * { position: relative; z-index: 1; }
+
+    .dates__row a:hover { color: var(--paper); }
+    .dates__row a:hover::before { transform: scaleY(1); transform-origin: top; }
+
+    .dates__idx {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+      transition: color 0.3s ease;
+    }
+
+    .dates__row a:hover .dates__idx { color: rgba(243, 239, 230, 0.5); }
+
+    .dates__day {
       font-family: var(--display);
-      font-size: clamp(1rem, 1.8vw, 1.4rem);
-      letter-spacing: 0.08em;
+      font-size: clamp(1.3rem, 2.6vw, 2.2rem);
+      letter-spacing: -0.03em;
+      line-height: 1;
       text-transform: uppercase;
-      color: var(--text-secondary);
     }
 
-    .tour__date-venue {
+    .dates__day small {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      color: var(--ink-soft);
+      margin-top: 0.3rem;
+      transition: color 0.3s ease;
+    }
+
+    .dates__row a:hover .dates__day small { color: rgba(243, 239, 230, 0.6); }
+
+    .dates__venue {
       font-family: var(--display);
-      font-size: clamp(1.1rem, 2vw, 1.6rem);
-      letter-spacing: 0.05em;
+      font-size: clamp(1.1rem, 2.2vw, 1.9rem);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
       text-transform: uppercase;
     }
 
-    .tour__date-city {
+    .dates__venue small {
+      display: block;
       font-family: var(--body);
-      font-size: clamp(0.7rem, 1vw, 0.85rem);
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
+      font-weight: 400;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: var(--ink-soft);
+      margin-top: 0.3rem;
+      transition: color 0.3s ease;
+    }
+
+    .dates__row a:hover .dates__venue small { color: rgba(243, 239, 230, 0.65); }
+
+    .dates__tix {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      white-space: nowrap;
     }
 
-    .tour__date-arrow {
-      font-size: clamp(1rem, 1.5vw, 1.3rem);
-      color: var(--text-muted);
-      transition: transform 0.3s ease, color 0.3s ease;
+    .dates__tix span { transition: transform 0.3s ease; }
+    .dates__row a:hover .dates__tix span { transform: translateX(5px); }
+
+    /* ─── PHOTO BREAK ─── */
+    .break {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      margin-top: clamp(3rem, 8vh, 6rem);
     }
 
-    .tour__date-row a:hover .tour__date-arrow {
-      transform: translateX(4px);
-      color: var(--text);
+    .break__photo {
+      overflow: hidden;
+      background: var(--paper-deep);
+      aspect-ratio: 4 / 5;
     }
 
-    /* ─── DIVIDER ─── */
-    .divider {
+    .break__photo img {
       width: 100%;
-      max-width: 80px;
-      height: 1px;
-      background: var(--border);
-      margin: 0 clamp(1.5rem, 5vw, 4rem);
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 30%;
+      filter: contrast(1.04) saturate(1.05);
     }
+
+    .break__text {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(2rem, 5vh, 4rem) var(--gutter);
+      border-left: 1px solid var(--rule);
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    .break__text .mono { opacity: 0.75; }
+
+    .break__quote {
+      font-family: var(--display);
+      font-size: clamp(2.2rem, 5vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      margin: clamp(2rem, 6vh, 4rem) 0;
+    }
+
+    .break__text .btn { align-self: flex-start; border-color: var(--accent-ink); color: var(--accent-ink); }
+    .break__text .btn:hover { background: var(--accent-ink); color: var(--accent); }
 
     /* ─── NEWSLETTER ─── */
     .newsletter {
-      padding: clamp(5rem, 10vh, 8rem) clamp(1.5rem, 5vw, 4rem);
-      max-width: 700px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 5rem);
+      padding: clamp(4rem, 9vh, 7rem) var(--gutter);
+      border-bottom: 1px solid var(--rule);
     }
 
-    .newsletter__heading {
+    .newsletter h2 {
       font-family: var(--display);
       font-weight: 400;
-      font-size: clamp(2.5rem, 7vw, 5rem);
-      letter-spacing: 0.02em;
-      line-height: 0.9;
+      font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+      line-height: 0.88;
+      letter-spacing: -0.04em;
       text-transform: uppercase;
-      margin-bottom: 1rem;
     }
 
-    .newsletter__subtitle {
-      font-family: var(--body);
+    .newsletter__copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .newsletter__sub {
       font-weight: 300;
-      font-size: clamp(0.8rem, 1.1vw, 0.95rem);
-      color: var(--text-secondary);
+      font-size: 0.95rem;
       line-height: 1.7;
+      color: var(--ink-soft);
       max-width: 420px;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.6rem;
     }
 
     .newsletter__form {
       display: flex;
-      max-width: 480px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: border-color 0.3s ease;
-      background: rgba(255,255,255,0.03);
-    }
-
-    .newsletter__form:focus-within {
-      border-color: rgba(255,255,255,0.2);
+      border-bottom: 1.5px solid var(--ink);
+      max-width: 520px;
     }
 
     .newsletter__input {
       flex: 1;
+      min-width: 0;
       background: transparent;
       border: none;
-      padding: 1.1rem 1.5rem;
-      color: var(--text);
-      font-family: var(--body);
-      font-size: 0.82rem;
-      font-weight: 300;
-      letter-spacing: 0.02em;
       outline: none;
-      min-width: 0;
+      padding: 1rem 0;
+      font-family: var(--body);
+      font-size: 1rem;
+      color: var(--ink);
     }
 
-    .newsletter__input::placeholder {
-      color: var(--text-muted);
-    }
+    .newsletter__input::placeholder { color: var(--ink-faint); }
 
     .newsletter__btn {
-      background: var(--text);
-      color: var(--bg);
+      background: transparent;
       border: none;
-      padding: 1.1rem 2.2rem;
-      font-family: var(--display);
-      font-size: 0.9rem;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
       cursor: pointer;
-      transition: opacity 0.3s ease;
-      white-space: nowrap;
-      flex-shrink: 0;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 0.74rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink);
+      padding: 1rem 0 1rem 1rem;
+      transition: color 0.25s ease;
     }
 
-    .newsletter__btn:hover {
-      opacity: 0.7;
-    }
-
-    /* ─── SOCIAL ─── */
-    .social {
-      padding: clamp(3rem, 6vh, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(5rem, 8vh, 7rem);
-    }
-
-    .social__links {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      list-style: none;
-    }
-
-    .social__link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 52px;
-      height: 52px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .social__link:hover {
-      color: var(--text);
-    }
-
-    .social__link svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }
+    .newsletter__btn:hover { color: var(--accent); }
 
     /* ─── FOOTER ─── */
     .footer {
-      padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
-      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 2rem var(--gutter) 2.5rem;
     }
 
-    .footer__text {
-      font-family: var(--body);
-      font-weight: 400;
-      font-size: 0.6rem;
-      color: var(--text-muted);
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
+    .social { display: flex; gap: 0.25rem; list-style: none; margin-left: -0.75rem; }
+
+    .social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      color: var(--ink-soft);
+      transition: color 0.25s ease, transform 0.25s ease;
     }
 
-    /* ─── FADE SYSTEM ─── */
-    .fade-element {
+    .social a:hover { color: var(--ink); transform: translateY(-2px); }
+    .social svg { width: 19px; height: 19px; fill: currentColor; }
+
+    .footer__copy { color: var(--ink-faint); text-align: right; }
+
+    /* ─── REVEAL ─── */
+    .reveal {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(28px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .fade-element.is-visible {
-      opacity: 1;
-      transform: translateY(0);
+    .reveal.is-visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero__title, .hero__sub, .hero__actions, .hero__photo img { animation: none; opacity: 1; transform: none; }
+      .marquee__track { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
     }
 
-    /* ─── MOBILE ─── */
-    @media (max-width: 600px) {
-      .hero__title {
-        font-size: clamp(4rem, 20vw, 7rem);
-      }
+    /* ─── TABLET / MOBILE ─── */
+    @media (max-width: 800px) {
+      .top { grid-template-columns: 1fr auto; }
+      .top__meta { display: none; }
 
-      .hero__info {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.3rem;
-      }
+      .hero { grid-template-columns: 1fr; min-height: 0; }
+      .hero__photo { order: -1; aspect-ratio: 4 / 5; max-height: 72vh; }
+      .hero__text { border-right: none; border-top: 1px solid var(--rule); padding-top: 1.5rem; }
+      .hero__kicker { display: none; }
+      .hero__title { font-size: clamp(4.6rem, 25vw, 9rem); }
+      .hero__num { font-size: 4.5rem; }
+      .hero__actions .btn { flex: 1 1 100%; justify-content: center; }
 
-      .hero__info-divider {
-        display: none;
-      }
+      .section-head { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
 
-      .hero__date,
-      .hero__venue {
-        font-size: clamp(1.4rem, 6vw, 2rem);
-      }
+      .dates__row a { grid-template-columns: 2rem 4.4rem 1fr; gap: 0.8rem; }
+      .dates__tix { display: none; }
+      .dates__venue small { font-size: 0.74rem; }
 
-      .hero__cta {
-        margin-top: 1.5rem;
-        padding: 0.9rem 2rem 0.75rem;
-        font-size: 1.2rem;
-        width: 100%;
-        text-align: center;
-      }
+      .break { grid-template-columns: 1fr; }
+      .break__text { border-left: none; border-top: 1px solid var(--rule); }
+      .break__photo { aspect-ratio: 4 / 5; max-height: 80vh; }
 
-      .hero__cta:hover {
-        padding-left: 2rem;
-        padding-right: 2rem;
-      }
+      .newsletter { grid-template-columns: 1fr; gap: 1.5rem; }
 
-      .tour__heading {
-        font-size: clamp(2.5rem, 14vw, 4.5rem);
-      }
-
-      .tour__date-row a {
-        grid-template-columns: 4.5rem 1fr auto;
-        gap: 0.8rem;
-        padding: 1rem 0;
-      }
-
-      .tour__date-city {
-        display: none;
-      }
-
-      .newsletter__heading {
-        font-size: clamp(2rem, 10vw, 3.5rem);
-      }
-
-      .newsletter__form {
-        flex-direction: column;
-        border: none;
-        background: transparent;
-        gap: 0.6rem;
-      }
-
-      .newsletter__input {
-        border: 1px solid var(--border);
-        padding: 1rem 1.4rem;
-        background: rgba(255,255,255,0.03);
-      }
-
-      .newsletter__btn {
-        padding: 1rem 2rem;
-      }
+      .footer { grid-template-columns: 1fr; }
+      .footer__copy { text-align: left; }
     }
   </style>
 </head>
 <body>
 
+  <!-- TOP BAR -->
+  <header class="top">
+    <a href="#" class="top__brand">SKINZ</a>
+    <span class="top__meta mono">Live Tour &middot; Danmark</span>
+    <a href="https://tix.to/skinz" target="_blank" rel="noopener" class="top__cta">Billetter</a>
+  </header>
+
   <!-- HERO -->
   <section class="hero">
-    <div class="hero__bg">
-      <img src="IMG_2212.jpg" alt="SKINZ" loading="eager">
-      <div class="hero__glitch"></div>
-      <div class="hero__scanlines"></div>
-      <div class="hero__gradient"></div>
-    </div>
-    <div class="hero__content">
-      <h1 class="hero__title">Skinz</h1>
-      <div class="hero__info">
-        <span class="hero__date">Live Tour 2026</span>
-        <div class="hero__info-divider"></div>
-        <span class="hero__venue">Danmark</span>
+    <div class="hero__text">
+      <div class="hero__kicker mono">
+        <span>Live Tour</span>
+        <span>Danmark</span>
+        <span>8 shows</span>
       </div>
-      <a href="https://tix.to/skinz" target="_blank" rel="noopener" class="hero__cta">Køb Billetter</a>
+      <div class="hero__title-wrap">
+        <h1 class="hero__title">Skinz</h1>
+        <div class="hero__sub">
+          <span class="hero__sub-big">Live Tour</span>
+          <span class="hero__sub-small mono">Esbjerg &rarr; Odense</span>
+        </div>
+        <div class="hero__actions">
+          <a href="https://tix.to/skinz" target="_blank" rel="noopener" class="btn btn--primary">K&oslash;b billetter <span class="btn__arrow">&rarr;</span></a>
+          <a href="#datoer" class="btn btn--ghost">Alle datoer</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero__photo">
+      <img
+        src="img/skinz-hero.jpg"
+        srcset="img/skinz-hero-900.jpg 900w, img/skinz-hero.jpg 1800w"
+        sizes="(max-width: 800px) 100vw, 50vw"
+        alt="SKINZ" loading="eager" fetchpriority="high" width="1800" height="2400">
+      <span class="hero__num" aria-hidden="true">26</span>
+      <span class="hero__tag mono">Live &middot; Danmark</span>
     </div>
   </section>
 
-  <!-- TOUR -->
-  <section class="tour">
-    <div class="fade-element">
-      <h2 class="tour__heading">Se Alle<br>Datoer</h2>
-      <ul class="tour__dates">
-        <li class="tour__date-row">
-          <a href="https://tobakken.dk/program/skinz/" target="_blank" rel="noopener">
-            <span class="tour__date-day">26. Feb</span>
-            <span class="tour__date-venue">Tobakken</span>
-            <span class="tour__date-city">Esbjerg</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://www.vejlemusikteater.dk/program/skinz/" target="_blank" rel="noopener">
-            <span class="tour__date-day">27. Feb</span>
-            <span class="tour__date-venue">Vejle Musikteater</span>
-            <span class="tour__date-city">Vejle</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://www.billetlugen.dk/event/20041796/?affiliate=DKA" target="_blank" rel="noopener">
-            <span class="tour__date-day">28. Feb</span>
-            <span class="tour__date-venue">Skr&aring;en</span>
-            <span class="tour__date-city">Aalborg</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://ringstedkongrescenter.dk/events/skinz/" target="_blank" rel="noopener">
-            <span class="tour__date-day">06. Mar</span>
-            <span class="tour__date-venue">Ringsted Kongrescenter</span>
-            <span class="tour__date-city">Ringsted</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://www.ticketmaster.dk/event/177104260?language=da-dk&camefrom=train&brand=dk_train" target="_blank" rel="noopener">
-            <span class="tour__date-day">07. Mar</span>
-            <span class="tour__date-venue">TRAIN</span>
-            <span class="tour__date-city">Aarhus</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://kuto.dk/arrangementer/skinz" target="_blank" rel="noopener">
-            <span class="tour__date-day">13. Mar</span>
-            <span class="tour__date-venue">Toldkammeret</span>
-            <span class="tour__date-city">Helsing&oslash;r</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://www.billetlugen.dk/event/20036852/?affiliate=VGA" target="_blank" rel="noopener">
-            <span class="tour__date-day">14. Mar</span>
-            <span class="tour__date-venue">VEGA</span>
-            <span class="tour__date-city">K&oslash;benhavn</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-        <li class="tour__date-row">
-          <a href="https://postenlive.dk/event/skinz/" target="_blank" rel="noopener">
-            <span class="tour__date-day">20. Mar</span>
-            <span class="tour__date-venue">Posten</span>
-            <span class="tour__date-city">Odense</span>
-            <span class="tour__date-arrow">&rarr;</span>
-          </a>
-        </li>
-      </ul>
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__item">Skinz Live Tour</span>
+      <span class="marquee__item">Esbjerg</span>
+      <span class="marquee__item">Vejle</span>
+      <span class="marquee__item">Aalborg</span>
+      <span class="marquee__item">Ringsted</span>
+      <span class="marquee__item">Aarhus</span>
+      <span class="marquee__item">Helsing&oslash;r</span>
+      <span class="marquee__item">K&oslash;benhavn</span>
+      <span class="marquee__item">Odense</span>
+      <span class="marquee__item">Skinz Live Tour</span>
+      <span class="marquee__item">Esbjerg</span>
+      <span class="marquee__item">Vejle</span>
+      <span class="marquee__item">Aalborg</span>
+      <span class="marquee__item">Ringsted</span>
+      <span class="marquee__item">Aarhus</span>
+      <span class="marquee__item">Helsing&oslash;r</span>
+      <span class="marquee__item">K&oslash;benhavn</span>
+      <span class="marquee__item">Odense</span>
     </div>
+  </div>
+
+  <!-- DATES -->
+  <section id="datoer">
+    <div class="section-head reveal">
+      <h2>Datoer</h2>
+      <span class="mono">8 shows &middot; Danmark</span>
+    </div>
+    <!-- TODO: erstat datoer og links med den nye tours datoer -->
+    <ul class="dates reveal">
+      <li class="dates__row"><a href="https://tobakken.dk/program/skinz/" target="_blank" rel="noopener">
+        <span class="dates__idx">01</span>
+        <span class="dates__day">26 Feb<small>Torsdag</small></span>
+        <span class="dates__venue">Tobakken<small>Esbjerg</small></span>
+        <span class="dates__tix">Billetter <span>&rarr;</span></span>
+      </a></li>
+      <li class="dates__row"><a href="https://www.vejlemusikteater.dk/program/skinz/" target="_blank" rel="noopener">
+        <span class="dates__idx">02</span>
+        <span class="dates__day">27 Feb<small>Fredag</small></span>
+        <span class="dates__venue">Vejle Musikteater<small>Vejle</small></span>
+        <span class="dates__tix">Billetter <span>&rarr;</span></span>
+      </a></li>
+      <li class="dates__row"><a href="https://www.billetlugen.dk/event/20041796/?affiliate=DKA" target="_blank" rel="noopener">
+        <span class="dates__idx">03</span>
+        <span class="dates__day">28 Feb<small>L&oslash;rdag</small></span>
+        <span class="dates__venue">Skr&aring;en<small>Aalborg</small></span>
+        <span class="dates__tix">Billetter <span>&rarr;</span></span>
+      </a></li>
+      <li class="dates__row"><a href="https://ringstedkongrescenter.dk/events/skinz/" target="_blank" rel="noopener">
+        <span class="dates__idx">04</span>
+        <span class="dates__day">06 Mar<small>Fredag</small></span>
+        <span class="dates__venue">Ringsted Kongrescenter<small>Ringsted</small></span>
+        <span class="dates__tix">Billetter <span>&rarr;</span></span>
+      </a></li>
+      <li class="dates__row"><a href="https://www.ticketmaster.dk/event/177104260?language=da-dk&camefrom=train&brand=dk_train" target="_blank" rel="noopener">
+        <span class="dates__idx">05</span>
+        <span class="dates__day">07 Mar<small>L&oslash;rdag</small></span>
+        <span class="dates__venue">Train<small>Aarhus</small></span>
+        <span class="dates__tix">Billetter <span>&rarr;</span></span>
+      </a></li>
+      <li class="dates__row"><a href="https://kuto.dk/arrangementer/skinz" target="_blank" rel="noopener">
+        <span class="dates__idx">06</span>
+        <span class="dates__day">13 Mar<small>Fredag</small></span>
+        <span class="dates__venue">Toldkammeret<small>Helsing&oslash;r</small></span>
+        <span class="dates__tix">Billetter <span>&rarr;</span></span>
+      </a></li>
+      <li class="dates__row"><a href="https://www.billetlugen.dk/event/20036852/?affiliate=VGA" target="_blank" rel="noopener">
+        <span class="dates__idx">07</span>
+        <span class="dates__day">14 Mar<small>L&oslash;rdag</small></span>
+        <span class="dates__venue">Vega<small>K&oslash;benhavn</small></span>
+        <span class="dates__tix">Billetter <span>&rarr;</span></span>
+      </a></li>
+      <li class="dates__row"><a href="https://postenlive.dk/event/skinz/" target="_blank" rel="noopener">
+        <span class="dates__idx">08</span>
+        <span class="dates__day">20 Mar<small>Fredag</small></span>
+        <span class="dates__venue">Posten<small>Odense</small></span>
+        <span class="dates__tix">Billetter <span>&rarr;</span></span>
+      </a></li>
+    </ul>
   </section>
 
-  <!-- DIVIDER -->
-  <div class="divider fade-element"></div>
+  <!-- PHOTO BREAK -->
+  <section class="break reveal">
+    <div class="break__photo">
+      <img
+        src="img/skinz-live.jpg"
+        srcset="img/skinz-live-900.jpg 900w, img/skinz-live.jpg 1800w"
+        sizes="(max-width: 800px) 100vw, 50vw"
+        alt="SKINZ" loading="lazy" width="1800" height="2400">
+    </div>
+    <div class="break__text">
+      <span class="mono">Live &middot; Danmark</span>
+      <p class="break__quote">Otte byer.<br>&Eacute;n tour.<br>Kom med.</p>
+      <a href="https://tix.to/skinz" target="_blank" rel="noopener" class="btn">K&oslash;b billetter <span class="btn__arrow">&rarr;</span></a>
+    </div>
+  </section>
 
   <!-- NEWSLETTER -->
   <section class="newsletter">
-    <div class="fade-element">
-      <h2 class="newsletter__heading">Skriv Dig Op</h2>
-      <p class="newsletter__subtitle">Tilmeld dig nyhedsbrevet og v&aelig;r den f&oslash;rste som f&aring;r besked om koncertannonceringer, nye udgivelser og meget mere.</p>
+    <div class="reveal">
+      <span class="mono" style="color: var(--ink-soft);">Nyhedsbrev</span>
+      <h2 style="margin-top: 0.8rem;">Skriv dig op</h2>
+    </div>
+    <div class="newsletter__copy reveal">
+      <p class="newsletter__sub">F&aring; besked f&oslash;rst om nye koncerter, udgivelser og alt det andet.</p>
       <form class="newsletter__form" id="newsletterForm" action="https://skinzmusic.us2.list-manage.com/subscribe/post?u=261bf8ddbe46f1b034f80c472&amp;id=6f3b09bdf3&amp;f_id=00c592e0f0" method="post" target="_blank">
         <input type="email" name="EMAIL" class="newsletter__input" placeholder="Din e-mail" required autocomplete="email" aria-label="E-mail adresse">
         <input type="text" name="b_261bf8ddbe46f1b034f80c472_6f3b09bdf3" tabindex="-1" value="" style="position: absolute; left: -5000px;" aria-hidden="true">
-        <button type="submit" class="newsletter__btn">Tilmeld</button>
+        <button type="submit" class="newsletter__btn">Tilmeld &rarr;</button>
       </form>
-    </div>
-  </section>
-
-  <!-- DIVIDER -->
-  <div class="divider fade-element"></div>
-
-  <!-- SOCIAL -->
-  <section class="social">
-    <div class="fade-element">
-      <ul class="social__links">
-        <li><a href="https://www.instagram.com/skinz/" class="social__link" aria-label="Instagram" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </a></li>
-        <li><a href="https://www.facebook.com/SkinzMusic/" class="social__link" aria-label="Facebook" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </a></li>
-        <li><a href="https://www.youtube.com/@SkinzKBH" class="social__link" aria-label="YouTube" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a></li>
-        <li><a href="https://open.spotify.com/artist/323gjVOWgnKGW3VuT8VKTx" class="social__link" aria-label="Spotify" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-        </a></li>
-        <li><a href="https://www.tiktok.com/@skinzmusic" class="social__link" aria-label="TikTok" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-        </a></li>
-      </ul>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p class="footer__text">&copy; 2026 Skinz</p>
+    <ul class="social">
+      <li><a href="https://www.instagram.com/skinz/" aria-label="Instagram" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a></li>
+      <li><a href="https://www.facebook.com/SkinzMusic/" aria-label="Facebook" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a></li>
+      <li><a href="https://www.youtube.com/@SkinzKBH" aria-label="YouTube" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a></li>
+      <li><a href="https://open.spotify.com/artist/323gjVOWgnKGW3VuT8VKTx" aria-label="Spotify" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      </a></li>
+      <li><a href="https://www.tiktok.com/@skinzmusic" aria-label="TikTok" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a></li>
+    </ul>
+    <p class="footer__copy mono">&copy; 2026 Skinz</p>
   </footer>
 
   <script>
@@ -696,40 +754,8 @@
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-    document.querySelectorAll('.fade-element').forEach(el => observer.observe(el));
-
-    // Parallax scroll effect
-    const heroBg = document.querySelector('.hero__bg');
-    const heroContent = document.querySelector('.hero__content');
-    const hero = document.querySelector('.hero');
-
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      const heroH = hero.offsetHeight;
-      if (scrollY < heroH) {
-        const progress = scrollY / heroH;
-        heroBg.style.transform = `translateY(${scrollY * 0.15}px)`;
-        heroContent.style.transform = `translateY(${scrollY * -0.25}px)`;
-        heroContent.style.opacity = 1 - progress * 1.3;
-      }
-    }, { passive: true });
-
-    // Glitch jitter
-    const heroImgEl = document.querySelector('.hero__bg img');
-    function triggerGlitchJitter() {
-      const offset = (Math.random() - 0.5) * 5;
-      heroImgEl.style.translate = `${offset}px 0`;
-      setTimeout(() => {
-        heroImgEl.style.translate = `${-offset * 0.4}px 0`;
-        setTimeout(() => {
-          heroImgEl.style.translate = 'none';
-        }, 35);
-      }, 40);
-      setTimeout(triggerGlitchJitter, 1500 + Math.random() * 2500);
-    }
-    setTimeout(triggerGlitchJitter, 1200);
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
 
 </body>

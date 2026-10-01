@@ -1,0 +1,5 @@
+# Originals and internal files: not served publicly. Site uses img/ versions.
+IMG_*.JPG
+IMG_*.jpg
+*.pdf
+.claude
