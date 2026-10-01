@@ -314,6 +314,28 @@
 
     .hero--poster .hero__cta { margin-top: 1rem; flex-shrink: 0; }
 
+    .hero__corner {
+      position: absolute;
+      left: 0; right: 0;
+      top: 11%;
+      z-index: 3;
+      margin: 0;
+      text-align: center;
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(1.25rem, 5.6vw, 1.9rem);
+      line-height: 1.05;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--pink);
+      text-shadow: 0 2px 14px rgba(0,0,0,0.6);
+      pointer-events: none;
+    }
+
+    @media (min-width: 701px) {
+      .hero__corner { font-size: clamp(1.3rem, 2.4vh, 2rem); top: 10%; }
+    }
+
     .sr-only {
       position: absolute;
       width: 1px; height: 1px;
@@ -718,15 +740,12 @@
           <source media="(max-width: 700px)" srcset="img/hero-mo-story.jpg">
           <img src="img/hero-mo-portrait.jpg" srcset="img/hero-mo-portrait.jpg 1600w, img/hero-mo-portrait-2x.jpg 2267w" sizes="(min-width: 701px) 75vh, 100vw" alt="SKINZ - “MO”. Poolen, 02/10/2027" loading="eager" fetchpriority="high" width="1600" height="2126">
         </picture>
+        <p class="hero__corner">Mit st&oslash;rste show.<br>Mit eneste show i 2027</p>
         <div class="hero__glitch" aria-hidden="true"></div>
         <div class="hero__scanlines" aria-hidden="true"></div>
       </div>
     </div>
-    <div class="hero__content">
-      <h1 class="sr-only">SKINZ - “MO” - Poolen 02/10/2027</h1>
-      <p class="hero__tagline">Mit st&oslash;rste show.<br>Mit eneste show i 2027</p>
-      <a href="https://tickets.poolen.dk/en/uzt2lnxgt7mxmmk/eventsaleclosed" target="_blank" rel="noopener" class="hero__cta">K&oslash;b Billetter</a>
-    </div>
+    <h1 class="sr-only">SKINZ - “MO” - Poolen 02/10/2027</h1>
   </section>
 
   <!-- TOUR -->
@@ -807,7 +826,6 @@
 
     // Parallax scroll effect
     const heroBg = document.querySelector('.hero__poster');
-    const heroContent = document.querySelector('.hero__content');
     const hero = document.querySelector('.hero');
 
     const desktop = window.matchMedia('(min-width: 701px)');
@@ -818,9 +836,6 @@
       if (scrollY < heroH) {
         const progress = scrollY / heroH;
         heroBg.style.transform = `translateY(${scrollY * 0.06}px)`;
-        heroContent.style.transform = `translateY(${scrollY * -0.06}px)`;
-        // Eased fade: fully out at 420px of scroll, before the text would reach the poster's date line
-        heroContent.style.opacity = Math.max(0, 1 - Math.pow(scrollY / 420, 1.5));
       }
     }, { passive: true });
 
