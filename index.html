@@ -262,16 +262,33 @@
     }
 
     .hero--poster .hero__poster { display: block; }
-    .hero--poster .hero__glitch,
-    .hero--poster .hero__scanlines { display: none; }
+    .hero--poster .hero__frame { position: relative; overflow: hidden; }
+    .hero--poster .hero__frame picture { display: block; }
 
     .hero--poster .hero__poster img {
       width: 100%;
       height: auto;
       display: block;
       opacity: 0;
-      animation: heroReveal 1s ease 0.1s forwards;
+      animation: heroReveal 1s ease 0.1s forwards, posterGlitch 3.5s infinite 1.2s;
     }
+
+    .hero--poster .hero__glitch::before,
+    .hero--poster .hero__glitch::after {
+      background-image: url('img/hero-mo-portrait.jpg');
+      background-size: 100% 100%;
+      background-position: center;
+      filter: none;
+    }
+    .hero--poster .hero__glitch::before { animation: posterGlitchR 3s infinite; }
+    .hero--poster .hero__glitch::after { animation: posterGlitchB 3s infinite 0.15s; }
+
+    @media (max-width: 700px) {
+      .hero--poster .hero__glitch::before,
+      .hero--poster .hero__glitch::after { background-image: url('img/hero-mo-story.jpg'); }
+    }
+
+    .divider { display: none; }
 
     .hero--poster .hero__content {
       position: static;
@@ -333,24 +350,12 @@
         overflow: hidden;
         box-shadow: 0 0 80px rgba(0,0,0,0.6);
       }
-      .hero--poster .hero__frame picture { display: block; height: 100%; }
+      .hero--poster .hero__frame picture { height: 100%; }
       .hero--poster .hero__poster img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        animation: heroReveal 1s ease 0.1s forwards, posterGlitch 3.5s infinite 1.2s;
       }
-      .hero--poster .hero__glitch { display: block; }
-      .hero--poster .hero__scanlines { display: block; }
-      .hero--poster .hero__glitch::before,
-      .hero--poster .hero__glitch::after {
-        background-image: url('img/hero-mo-portrait.jpg');
-        background-size: 100% 100%;
-        background-position: center;
-        filter: none;
-      }
-      .hero--poster .hero__glitch::before { animation: posterGlitchR 3s infinite; }
-      .hero--poster .hero__glitch::after { animation: posterGlitchB 3s infinite 0.15s; }
       .hero--poster .hero__content {
         flex-direction: row;
         align-items: center;
@@ -362,9 +367,8 @@
       }
       .hero__tagline { font-size: clamp(1.8rem, 3vw, 3rem); }
       .hero--poster .hero__cta { margin-top: 0; }
-      /* Desktop: no "Billetter" heading above the date row, no section dividers */
+      /* Desktop: no "Billetter" heading above the date row */
       .tour__heading { display: none; }
-      .divider { display: none; }
     }
 
     @keyframes posterGlitch {
@@ -817,10 +821,10 @@
       }
     }, { passive: true });
 
-    // Glitch jitter (desktop only; mobile untouched)
+    // Glitch jitter
     const heroImgEl = document.querySelector('.hero__poster img');
     function triggerGlitchJitter() {
-      if (desktop.matches && heroImgEl) {
+      if (heroImgEl) {
         const offset = (Math.random() - 0.5) * 6;
         heroImgEl.style.translate = `${offset}px 0`;
         setTimeout(() => {
